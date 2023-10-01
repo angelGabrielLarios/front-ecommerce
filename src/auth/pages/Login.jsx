@@ -51,7 +51,7 @@ export const Login = () => {
                 else {
                     dispatch(login(user))
                     setErrorLogin("")
-                    navigate('/')
+                    navigate('/home')
                 }
 
 

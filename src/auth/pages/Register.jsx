@@ -63,7 +63,7 @@ export const Register = () => {
 
                     dispatch(login(data))
                     setErrorEmailAlreadyeExists("")
-                    navigate('/')
+                    navigate('/home')
                 }
 
             })

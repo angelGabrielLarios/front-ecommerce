@@ -5,6 +5,7 @@ import { PrivateRoute } from './PrivateRoute'
 import { isEmptyObject } from '../helpers'
 import { useSelector } from 'react-redux'
 import { AppMain } from '../appmain/pages'
+import { CartPage } from '../cart/pages'
 
 export const AppRouter = () => {
 
@@ -47,6 +48,11 @@ export const AppRouter = () => {
             <Route
                 path='home'
                 element={<AppMain />}
+            />
+
+            <Route
+                path='cart'
+                element={<CartPage />}
             />
 
         </Routes>
