@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux"
 import { Link, useNavigate } from 'react-router-dom'
 import { login } from "../../store"
 import { SpinnerSmall } from "../../components"
+import { url } from "../../helpers"
 
 
 export const Register = () => {
@@ -36,7 +37,7 @@ export const Register = () => {
 
 
         setIsLoading(true)
-        fetch('http://localhost:1234/users/register', {
+        fetch(`${url}/users/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -54,14 +55,17 @@ export const Register = () => {
             .then(response => response.json())
             .then(user => {
 
-                console.log(1)
-                console.log(user?.emailAlreadyeExists)
+
                 if (user?.emailAlreadyeExists) {
                     setErrorEmailAlreadyeExists(user.emailAlreadyeExists)
                 }
                 else {
 
-                    dispatch(login(data))
+                    dispatch(login({
+                        nif: user.NIF,
+                        name: user.nombre,
+                        email: user.correo
+                    }))
                     setErrorEmailAlreadyeExists("")
                     navigate('/home')
                 }

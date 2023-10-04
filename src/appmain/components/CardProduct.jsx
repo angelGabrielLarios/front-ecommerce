@@ -1,7 +1,43 @@
 
 import PropTypes from 'prop-types'
+import { useSelector } from 'react-redux'
 
-export const CardProduct = ({ name = "", price = 0, url_image = "" }) => {
+import { formaterCurrency, url } from '../../helpers'
+import { useState } from 'react'
+import { SpinnerSmall } from '../../components'
+
+
+export const CardProduct = ({ name = "", price = 0, url_image = "", product = {} }) => {
+
+    const [isLoading, setIsLoading] = useState(false)
+    const auth = useSelector(state => state.auth)
+
+    const onClickAddCart = () => {
+
+        setIsLoading(true)
+        fetch(`${url}/user_product`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    user_product: {
+                        user_nif: auth.nif,
+                        codigo_producto: product.codigo_producto,
+
+                    }
+
+                })
+            }
+
+        )
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(err => console.error(err))
+            .finally(() => setIsLoading(false))
+
+    }
     return (
         <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-lg shadow-purple-400 ">
 
@@ -34,8 +70,12 @@ export const CardProduct = ({ name = "", price = 0, url_image = "" }) => {
                     <span className="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded   ml-3">5.0</span>
                 </div>
                 <div className="flex items-center justify-between">
-                    <span className="text-3xl font-bold text-gray-900 de">{price}</span>
-                    <a href="#" className="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800">Add to cart</a>
+                    <span className="text-xl font-bold text-gray-900 de">{formaterCurrency(price)}</span>
+                    <button
+                        disabled={isLoading}
+                        className="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800 flex items-center gap-4 disabled:bg-gray-400"
+                        onClick={onClickAddCart}
+                    >Add to cart {isLoading ? <SpinnerSmall /> : null}</button>
                 </div>
             </div>
         </div>
@@ -45,5 +85,6 @@ export const CardProduct = ({ name = "", price = 0, url_image = "" }) => {
 CardProduct.propTypes = {
     name: PropTypes.string,
     price: PropTypes.number,
-    url_image: PropTypes.string
+    url_image: PropTypes.string,
+    product: PropTypes.object
 }

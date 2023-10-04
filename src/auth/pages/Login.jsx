@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux"
 import { Link, useNavigate } from "react-router-dom"
 import { login } from "../../store"
 import { SpinnerSmall } from "../../components"
+import { url } from "../../helpers"
 
 
 export const Login = () => {
@@ -31,7 +32,7 @@ export const Login = () => {
 
 
         setIsLoading(true)
-        fetch('http://localhost:1234/users/login', {
+        fetch(`${url}/users/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -49,7 +50,11 @@ export const Login = () => {
                     setErrorLogin(user.message)
                 }
                 else {
-                    dispatch(login(user))
+                    dispatch(login({
+                        nif: user.NIF,
+                        name: user.nombre,
+                        email: user.correo
+                    }))
                     setErrorLogin("")
                     navigate('/home')
                 }

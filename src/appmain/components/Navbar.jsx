@@ -1,15 +1,16 @@
 import { useState, useEffect } from "react"
 import { useDispatch } from "react-redux"
 import { updateProducts } from "../../store/products"
+import { Link } from "react-router-dom"
+import { url } from "../../helpers"
 
 export const Navbar = () => {
 
     const dispatch = useDispatch()
-    /* const { products } = useSelector(state => state.products) */
 
     const [seccions, setSeccions] = useState([])
     useEffect(() => {
-        fetch(`http://localhost:1234/seccions`)
+        fetch(`${url}/seccions`)
             .then(response => response.json())
             .then(seccions => {
                 setSeccions([
@@ -21,7 +22,11 @@ export const Navbar = () => {
     const getProductsBySearh = (search = "") => {
         fetch(`http://localhost:1234/products/search?search=${search}`)
             .then(response => response.json())
-            .then(data => dispatch(updateProducts(data)))
+            .then(data => {
+                dispatch(updateProducts(
+                    { update_products: data }
+                ))
+            })
     }
     return (
         <>
@@ -33,9 +38,13 @@ export const Navbar = () => {
                     </a>
                     <div className="flex items-center gap-4">
 
-                        <img src="images/cart.svg" alt="" className="w-8" />
 
                         <img src="images/user.svg" alt="" className="w-8" />
+                        <Link
+                            to={`/cart`}
+                        >
+                            <img src="images/cart.svg" alt="" className="w-8" />
+                        </Link>
                     </div>
                 </div>
             </nav>
@@ -60,15 +69,6 @@ export const Navbar = () => {
                                 })
                             }
 
-                            {/* <li>
-                                <a href="#" className="text-white  hover:underline">Company</a>
-                            </li>
-                            <li>
-                                <a href="#" className="text-white  hover:underline">Team</a>
-                            </li>
-                            <li>
-                                <a href="#" className="text-white  hover:underline">Features</a>
-                            </li> */}
                         </ul>
                     </div>
                 </div>

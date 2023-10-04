@@ -11,13 +11,8 @@ export const productsSlice = createSlice({
     reducers: {
 
         updateProducts: (state, action) => {
-            /* console.log(action)
-            state.nif = action.payload.NIF
-            state.name = action.payload.Nombre
-            state.email = action.payload.Correo
-            state.status = 'login' */
             state.products = [
-                ...action.payload
+                ...action.payload.update_products
             ]
         }
     }

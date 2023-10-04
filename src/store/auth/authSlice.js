@@ -9,11 +9,10 @@ export const authSlice = createSlice({
     reducers: {
 
         login: (state, action) => {
-            console.log(action)
-            state.nif = action.payload.NIF
-            state.name = action.payload.Nombre
-            state.email = action.payload.Correo
-            state.status = 'login'
+            state.nif = action.payload.nif;
+            state.name = action.payload.name;
+            state.email = action.payload.email;
+            state.status = 'login';
         }
     }
 })

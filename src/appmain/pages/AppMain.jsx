@@ -3,6 +3,7 @@ import { CardProduct, Navbar } from "../components/"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { updateProducts } from "../../store/products"
+import { url } from "../../helpers"
 
 
 export const AppMain = () => {
@@ -10,13 +11,16 @@ export const AppMain = () => {
 
     const dispatch = useDispatch()
     const { products } = useSelector(state => state.products)
+    const { cartProducts } = useSelector(state => state.cartProducts)
+    console.log(cartProducts)
+
 
     useEffect(() => {
-        fetch(`http://localhost:1234/products`)
+        fetch(`${url}/products`)
             .then(response => response.json())
             .then(data => {
                 console.log(data)
-                dispatch(updateProducts(data))
+                dispatch(updateProducts({ update_products: data }))
             })
     }, [dispatch])
 
@@ -25,7 +29,7 @@ export const AppMain = () => {
     return (
         <section>
             <Navbar />
-            <div className="grid grid-cols-3 lg:w-10/12 mx-auto gap-4">
+            <div className="grid grid-cols-1 justify-items-center md:grid-cols-2 lg:grid-cols-3 lg:w-10/12 mx-auto gap-4 mt-60">
                 {
                     products.map(product => {
                         return (
@@ -34,6 +38,7 @@ export const AppMain = () => {
                                 name={product.nombre}
                                 price={parseFloat(product.precio)}
                                 url_image={product.url_image}
+                                product={product}
                             />
                         )
                     })
