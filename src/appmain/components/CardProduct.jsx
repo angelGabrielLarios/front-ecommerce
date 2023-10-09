@@ -7,7 +7,7 @@ import { useState } from 'react'
 import { SpinnerSmall } from '../../components'
 
 
-export const CardProduct = ({ name = "", price = 0, url_image = "", product = {} }) => {
+export const CardProduct = ({ name = "", price = 0, url_image = "", nombre_seccion = "", product = {} }) => {
 
     const [isLoading, setIsLoading] = useState(false)
     const auth = useSelector(state => state.auth)
@@ -69,13 +69,17 @@ export const CardProduct = ({ name = "", price = 0, url_image = "", product = {}
                     </svg>
                     <span className="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded   ml-3">5.0</span>
                 </div>
-                <div className="flex items-center justify-between">
-                    <span className="text-xl font-bold text-gray-900 de">{formaterCurrency(price)}</span>
+
+                <div className='flex items-center gap-2'>
+                    <p className='font-bold text-purple-600 '>Seccion: </p><span className='text-red-600'>{nombre_seccion}</span>
+                </div>
+                <div className="space-y-4">
+                    <span className="text-base font-bold text-gray-900 ">{formaterCurrency(price)}</span>
                     <button
                         disabled={isLoading}
                         className="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800 flex items-center gap-4 disabled:bg-gray-400"
                         onClick={onClickAddCart}
-                    >Add to cart {isLoading ? <SpinnerSmall /> : null}</button>
+                    >Agregar al carrito {isLoading ? <SpinnerSmall /> : null}</button>
                 </div>
             </div>
         </div>
@@ -86,5 +90,6 @@ CardProduct.propTypes = {
     name: PropTypes.string,
     price: PropTypes.number,
     url_image: PropTypes.string,
-    product: PropTypes.object
+    product: PropTypes.object,
+    nombre_seccion: PropTypes.string
 }

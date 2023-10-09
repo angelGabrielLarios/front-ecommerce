@@ -15,7 +15,11 @@ export const cartProductsSlice = createSlice({
             state.priceTotalAll = action.payload.priceTotalAllUpdate
         },
         updateCartProducts: (state, action) => {
-            const { cart_product } = action.payload
+            const { cart_products } = action.payload
+
+            state.cartProducts = [...cart_products]
+
+            /* const { cart_product } = action.payload
 
             const existCartProduct = state.cartProducts.findIndex(product => product.codigo_producto === cart_product.codigo_producto)
 
@@ -34,7 +38,7 @@ export const cartProductsSlice = createSlice({
                     ...state.cartProducts,
                     { ...cart_product, amount: 1 }
                 ]
-            }
+            } */
         },
 
         updateAmountCartProduct: (state, action) => {

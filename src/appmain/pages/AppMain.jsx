@@ -32,6 +32,7 @@ export const AppMain = () => {
             <div className="grid grid-cols-1 justify-items-center md:grid-cols-2 lg:grid-cols-3 lg:w-10/12 mx-auto gap-4 mt-60">
                 {
                     products.map(product => {
+
                         return (
                             <CardProduct
                                 key={product.codigo_producto}
@@ -39,6 +40,7 @@ export const AppMain = () => {
                                 price={parseFloat(product.precio)}
                                 url_image={product.url_image}
                                 product={product}
+                                nombre_seccion={product.nombre_seccion}
                             />
                         )
                     })

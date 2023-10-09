@@ -1,15 +1,19 @@
 
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { CartCard } from "../components"
 import { formaterCurrency, url } from "../../helpers"
 import { Link } from "react-router-dom"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
+import { updateCartProducts } from "../../store"
 
 
 
 export const CartPage = () => {
 
-    const [users_products, setUsers_products] = useState([])
+    /* const [users_products, setUsers_products] = useState([]) */
+
+    const { cartProducts } = useSelector(state => state.cartProducts)
+    const dispatch = useDispatch()
     const auth = useSelector(state => state.auth)
     const { priceTotalAll } = useSelector(state => state.cartProducts)
 
@@ -17,11 +21,12 @@ export const CartPage = () => {
         fetch(`${url}/user_product/${auth.nif}`)
             .then(response => response.json())
             .then(data => {
-                console.log(data)
-                setUsers_products(data)
+
+                dispatch(updateCartProducts({ cart_products: data }))
+
             })
             .catch(error => console.error(error))
-    }, [auth.nif])
+    }, [auth.nif, dispatch])
 
 
     return (
@@ -42,7 +47,7 @@ export const CartPage = () => {
 
 
                     {
-                        users_products?.map(product => {
+                        cartProducts?.map(product => {
                             return (
                                 <CartCard
                                     key={product.codigo_producto}
@@ -65,7 +70,7 @@ export const CartPage = () => {
 
                     <hr className="my-4" />
                     <p className="">
-                        Producto(s): <span>{users_products.length}</span>
+                        Producto(s): <span>{cartProducts.length}</span>
                     </p>
                     <div className="flex items-start">
 

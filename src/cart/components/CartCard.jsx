@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { formaterCurrency, url } from "../../helpers"
 import { useDispatch, useSelector } from "react-redux"
 import { SpinnerSmall } from "../../components"
-import { changePriceTotalAll } from "../../store"
+import { changePriceTotalAll, updateCartProducts } from "../../store"
 
 
 export const CartCard = ({ product }) => {
@@ -75,7 +75,18 @@ export const CartCard = ({ product }) => {
                 dispatch(changePriceTotalAll({ priceTotalAllUpdate: priceTotalAllMemory }))
             })
             .catch(error => console.error(error))
-    }, [priceTotal, auth.nif, dispatch])
+    }, [priceTotal, auth.nif, dispatch, isLoading])
+
+    useEffect(() => {
+        fetch(`${url}/user_product/${auth.nif}`)
+            .then(response => response.json())
+            .then(data => {
+
+                dispatch(updateCartProducts({ cart_products: data }))
+
+            })
+            .catch(error => console.error(error))
+    }, [isLoading, dispatch, auth.nif])
 
 
     return (
@@ -147,8 +158,28 @@ export const CartCard = ({ product }) => {
                 </div>
 
                 <button
-                    className="text-red-600 font-bold"
-                    onClick={() => { }}
+                    disabled={isLoading}
+                    className="text-red-600 font-bold disabled:text-gray-500"
+                    onClick={() => {
+
+                        setIsLoading(true)
+                        fetch(`${url}/user_product?user_nif=${auth.nif}&codigo_producto=${product.codigo_producto}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                console.log(data)
+                            })
+                            .catch(error => console.error(error))
+                            .finally(() => setIsLoading(false))
+
+
+
+
+                    }}
                 >
                     Eliminar
                 </button>
